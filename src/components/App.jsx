@@ -7,10 +7,12 @@ function App() {
   // firebase에서 회원가입, 로그인을 마친 후 누이터에 데이터를 보내주어야 한다.
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [userObj, setUserObj] = useState(null);
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setIsLoggedIn(user);
+        setUserObj(user);
+        setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
       }
@@ -20,7 +22,11 @@ function App() {
 
   return (
     <>
-      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : 'Initializing ... '}
+      {init ? (
+        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+      ) : (
+        'Initializing ... '
+      )}
       <footer>
         &copy;
         {new Date().getFullYear()}
