@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -25,3 +26,5 @@ export const SigninUser = signInWithEmailAndPassword;
 
 // firestore
 export const dbService = getFirestore();
+
+export const storageService = getStorage();
