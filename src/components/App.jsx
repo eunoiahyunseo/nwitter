@@ -5,7 +5,6 @@ import { authService } from 'fbase';
 function App() {
   const [init, setInit] = useState(false);
   // firebase에서 회원가입, 로그인을 마친 후 누이터에 데이터를 보내주어야 한다.
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [userObj, setUserObj] = useState(null);
   useEffect(() => {
@@ -13,9 +12,8 @@ function App() {
       if (user) {
         setUserObj({ ...user });
         setUserObj(user);
-        setIsLoggedIn(true);
       } else {
-        setIsLoggedIn(false);
+        setUserObj(false);
       }
       setInit(true);
     });
@@ -31,7 +29,7 @@ function App() {
     <>
       {init ? (
         <AppRouter
-          isLoggedIn={isLoggedIn}
+          isLoggedIn={Boolean(userObj)}
           userObj={userObj}
           refreshUser={refreshUser}
         />

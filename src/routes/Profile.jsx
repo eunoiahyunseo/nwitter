@@ -38,7 +38,10 @@ const Profile = ({ refreshUser, userObj }) => {
   // after the profile component rendering ( componentDidMount )
   useEffect(() => {
     getMyNweets();
-  });
+    return () => {
+      console.log('컴포넌트에서 사라짐');
+    };
+  }, []);
 
   const onChange = (event) => {
     const {
@@ -65,8 +68,9 @@ const Profile = ({ refreshUser, userObj }) => {
           type="text"
           placeholder="Display name"
           value={newDisplayName}
+          key="1"
         />
-        <input type="submit" value="Update Profile" />
+        <input type="submit" value="Update Profile" key="2" />
       </form>
       {ownNweets.map((nweet) => (
         <>
