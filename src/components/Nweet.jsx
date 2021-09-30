@@ -1,10 +1,13 @@
+/* eslint-disable jsx-a11y/no-autofocus */
 // eslint-disable-next-line object-curly-newline
 import { deleteDoc, doc, getFirestore, updateDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { storageService } from 'fbase';
 import { ref, deleteObject } from 'firebase/storage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
-const Nweet = ({ nweetObj, isOwner }) => {
+const Nweet = ({ nweetObj, isOwner, userObj }) => {
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
 
@@ -37,20 +40,32 @@ const Nweet = ({ nweetObj, isOwner }) => {
   };
 
   return (
-    <div>
+    <div className="nweet">
       {editing ? (
         <>
-          <form onSubmit={onSubmit}>
-            <input onChange={onChange} value={newNweet || ''} required />
-            <input type="submit" value="Update Nweet" />
+          <form onSubmit={onSubmit} className="container nweetEdit">
+            <input
+              onChange={onChange}
+              value={newNweet || ''}
+              required
+              placeholder="Edit your nweet"
+              autoFocus
+              className="formInput"
+            />
+            <input type="submit" value="Update Nweet" className="formBtn" />
           </form>
-          <button type="button" onClick={toggleEditing}>
+          <button
+            type="button"
+            onClick={toggleEditing}
+            className="formBtn cancelBtn"
+          >
             Cancel
           </button>
         </>
       ) : (
         <>
-          <h4>{nweetObj.text}</h4>
+          <div className="nweetProfileName">{`By : ${userObj.displayName}`}</div>
+          <h4>{`${nweetObj.text}`}</h4>
           {nweetObj.attachmentUrl && (
             <img
               src={nweetObj.attachmentUrl}
@@ -60,15 +75,14 @@ const Nweet = ({ nweetObj, isOwner }) => {
             />
           )}
           {isOwner && (
-            <>
-              <button type="button" onClick={onDeleteClick}>
-                Delete Nweet
-              </button>
-
-              <button type="button" onClick={toggleEditing}>
-                Edit Nweet
-              </button>
-            </>
+            <div className="nweet__actions">
+              <span onClick={onDeleteClick}>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span onClick={toggleEditing}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </span>
+            </div>
           )}
         </>
       )}
