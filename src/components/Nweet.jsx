@@ -64,7 +64,7 @@ const Nweet = ({ nweetObj, isOwner, userObj }) => {
         </>
       ) : (
         <>
-          <div className="nweetProfileName">{`By : ${userObj.displayName}`}</div>
+          <div className="nweetProfileName">{`By : ${nweetObj.creatorName}`}</div>
           <h4>{`${nweetObj.text}`}</h4>
           {nweetObj.attachmentUrl && (
             <img

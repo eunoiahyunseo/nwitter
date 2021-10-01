@@ -5,7 +5,16 @@
 import { authService, dbService } from 'fbase';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { where, collection, query, orderBy, getDocs } from 'firebase/firestore';
+import {
+  doc as doc_,
+  where,
+  collection,
+  query,
+  orderBy,
+  getDocs,
+  updateDoc,
+  getFirestore,
+} from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth';
 import { faList, faExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,10 +65,26 @@ const Profile = ({ refreshUser, userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (userObj.displayname !== newDisplayName) {
-      await updateProfile(userObj, {
-        displayName: newDisplayName, // have to rerendering Navigation Component
+    if (userObj.displayName !== newDisplayName) {
+      const displayName = userObj.displayName || 'Please Pick your name';
+      const q = query(
+        collection(dbService, 'nweets'),
+        where('creatorName', '==', displayName),
+      );
+      const querySnapshot = await getDocs(q);
+
+      const nweetArray = querySnapshot.docs.map(async (doc) => {
+        await updateDoc(doc_(getFirestore(), `nweets/${doc.id}`), {
+          creatorName: newDisplayName,
+        });
       });
+
+      await Promise.all(nweetArray);
+
+      await updateProfile(userObj, {
+        displayName: newDisplayName,
+      });
+
       refreshUser();
     }
   };
@@ -89,7 +114,7 @@ const Profile = ({ refreshUser, userObj }) => {
           <span className="nweetProfilespan">
             <FontAwesomeIcon icon={faList} color="#04aaff" />
           </span>
-          {`${newDisplayName}의 Nweet List`}
+          {`${newDisplayName || '*Please pick your name*'}의 Nweet List`}
         </div>
         <br />
         <div className="nweetProfilediv2">

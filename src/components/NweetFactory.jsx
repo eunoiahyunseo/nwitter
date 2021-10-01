@@ -28,6 +28,7 @@ const NweetFactory = ({ userObj }) => {
         text: nweet,
         createdAt: Date.now(),
         creatorId: userObj.uid,
+        creatorName: userObj.displayName || 'Please Pick your name',
         attachmentUrl,
       });
       setNweet('');

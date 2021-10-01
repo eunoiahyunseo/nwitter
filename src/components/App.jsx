@@ -4,7 +4,7 @@ import { authService } from 'fbase';
 
 function App() {
   const [init, setInit] = useState(false);
-  // firebase에서 회원가입, 로그인을 마친 후 누이터에 데이터를 보내주어야 한다.
+  // firebase에서 회원가입 , 로그인을 마친 후 누이터에 데이터를 보내주어야 한다.
 
   const [userObj, setUserObj] = useState(null);
   useEffect(() => {
